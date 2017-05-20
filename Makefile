@@ -31,7 +31,7 @@ CPPFLAGS += -isystem $(GTEST_DIR)/include -I $(TESTS_DIR) -I $(SRC_DIR)
 CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11
 
 # Each test suite becomes an executable file.
-TEST_SUITES = test_fib test_blinking_thing
+TEST_SUITES = test_fib test_blinking_thing test_keyboard_matrix
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -98,6 +98,17 @@ test_blinking_thing.o: $(TESTS_DIR)/test_blinking_thing.cpp  $(SRC_DIR)/blinking
 
 test_blinking_thing: blinking_thing.o test_blinking_thing.o Arduino.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+
+keyboard_matrix.o: $(SRC_DIR)/keyboard_matrix.cpp $(SRC_DIR)/keyboard_matrix.h $(TESTS_DIR)/Arduino.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/keyboard_matrix.cpp
+
+test_keyboard_matrix.o: $(TESTS_DIR)/test_keyboard_matrix.cpp  $(SRC_DIR)/keyboard_matrix.h $(TESTS_DIR)/Arduino.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/test_keyboard_matrix.cpp
+
+test_keyboard_matrix: keyboard_matrix.o test_keyboard_matrix.o Arduino.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
 
 Arduino.o: $(TESTS_DIR)/Arduino.h $(TESTS_DIR)/Arduino.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/Arduino.cpp

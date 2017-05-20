@@ -19,8 +19,8 @@ public:
 
 
 TEST_F(BlinkingThingTest, StartsLow) {
-    EXPECT_EQ(pin.mode, OUTPUT);
-    EXPECT_EQ(pin.value, LOW);
+    EXPECT_EQ(pin.get_mode(), OUTPUT);
+    EXPECT_EQ(pin.get_value(), LOW);
 }
 
 TEST_F(BlinkingThingTest, After500MillisSetsHigh) {
@@ -28,7 +28,7 @@ TEST_F(BlinkingThingTest, After500MillisSetsHigh) {
 
     blinking_thing.loop(500);
 
-    EXPECT_EQ(pin.value, HIGH);
+    EXPECT_EQ(pin.get_value(), HIGH);
 }
 
 
@@ -36,33 +36,33 @@ TEST_F(BlinkingThingTest, AlternatesLowAndHigh) {
     given_blinking_thing_timing(500, 1000);
 
     blinking_thing.loop(555);
-    EXPECT_EQ(pin.value, HIGH);
+    EXPECT_EQ(pin.get_value(), HIGH);
     blinking_thing.loop(666);
-    EXPECT_EQ(pin.value, HIGH);
+    EXPECT_EQ(pin.get_value(), HIGH);
     blinking_thing.loop(500 + 1000);
-    EXPECT_EQ(pin.value, LOW);
+    EXPECT_EQ(pin.get_value(), LOW);
 
     blinking_thing.loop(500 + 1000 + 500);
-    EXPECT_EQ(pin.value, HIGH);
+    EXPECT_EQ(pin.get_value(), HIGH);
 
     blinking_thing.loop(500 + 1000 + 500 + 1000);
-    EXPECT_EQ(pin.value, LOW);
+    EXPECT_EQ(pin.get_value(), LOW);
 }
 
 TEST_F(BlinkingThingTest, SetsScheduleFromparams) {
     given_blinking_thing_timing(333, 667);
 
     blinking_thing.loop(332);
-    EXPECT_EQ(pin.value, LOW);
+    EXPECT_EQ(pin.get_value(), LOW);
 
     blinking_thing.loop(333);
-    EXPECT_EQ(pin.value, HIGH);
+    EXPECT_EQ(pin.get_value(), HIGH);
 
     blinking_thing.loop(333 + 667);
-    EXPECT_EQ(pin.value, LOW);
+    EXPECT_EQ(pin.get_value(), LOW);
 
     blinking_thing.loop(333 + 667 + 333);
-    EXPECT_EQ(pin.value, HIGH);
+    EXPECT_EQ(pin.get_value(), HIGH);
 }
 
 // Old algorithm switched from LOW to HIGH first time it notices it is past 1st transition time.
@@ -72,5 +72,5 @@ TEST_F(BlinkingThingTest, CanSkipFirstCycle) {
     given_blinking_thing_timing(333, 667);
 
     blinking_thing.loop(333 + 667);
-    EXPECT_EQ(pin.value, LOW);
+    EXPECT_EQ(pin.get_value(), LOW);
 }

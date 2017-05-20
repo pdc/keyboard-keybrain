@@ -13,6 +13,9 @@
 
 #include "Arduino.h"
 
+
+typedef unsigned long millis_t;
+
 /*
 * Defines how to access the I/O pins.
 * This version just calls the gloabl functions supplied by Arduino.
