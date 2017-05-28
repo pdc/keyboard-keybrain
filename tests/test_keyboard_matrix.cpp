@@ -97,7 +97,7 @@ private:
 /* Tests */
 
 
-TEST_F(KeyboardMatrixTest, StartsWithAllColumnsFloating) {
+TEST_F(KeyboardMatrixTest, StartsWithAllColumnsFloatingAllRowsInputs) {
     for (int i = 0; i < column_count; ++i) {
         EXPECT_TRUE(column_pins[i].is_floating());
     }
@@ -157,7 +157,6 @@ TEST_F(KeyboardMatrixTest, KeyReleaseIsDebounced) {
     const millis_t start = 69;
     given_loop_called_with_closed_switches(start, { {1, 1}, {0, 1} });
     given_loop_called_with_closed_switches(start + debounce_millis, { {0, 1} });
-    given_loop_called_with_closed_switches(start + debounce_millis + 1, { {0, 1} });
 
     when_loop_called_with_closed_switches(start + 2 * debounce_millis - 1, { {1, 1}, {0, 1} });
 
