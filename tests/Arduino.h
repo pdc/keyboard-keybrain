@@ -22,7 +22,7 @@
 
 /*
 * The global stubs are all designed to explode if used.
-* The reson for this is they cannot be trusted given that
+* The reason for this is they cannot be trusted given that
 * the test runner is multithreaded.
 * In tests we arrange for members of fixture objects
 * to be called instead.
@@ -31,6 +31,19 @@
 void pinMode(int pin, int mode);
 int digitalRead(int pin);
 void digitalWrite(int pin, int value);
+
+struct Keyboard_t {
+    void set_modifier(uint16_t flags);
+    void set_key1(uint8_t scancode);
+    void set_key2(uint8_t scancode);
+    void set_key3(uint8_t scancode);
+    void set_key4(uint8_t scancode);
+    void set_key5(uint8_t scancode);
+    void set_key6(uint8_t scancode);
+    void send_now();
+};
+
+extern Keyboard_t Keyboard;
 
 
 class FakePinListener {

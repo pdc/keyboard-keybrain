@@ -31,7 +31,7 @@ CPPFLAGS += -isystem $(GTEST_DIR)/include -I $(TESTS_DIR) -I $(SRC_DIR)
 CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11
 
 # Each test suite becomes an executable file.
-TEST_SUITES = test_fib test_blinking_thing test_keyboard_matrix
+TEST_SUITES = test_fib test_blinking_thing test_keyboard_matrix test_keyboard_cortex
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -107,6 +107,16 @@ test_keyboard_matrix.o: $(TESTS_DIR)/test_keyboard_matrix.cpp  $(SRC_DIR)/keyboa
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/test_keyboard_matrix.cpp
 
 test_keyboard_matrix: keyboard_matrix.o test_keyboard_matrix.o Arduino.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
+
+
+keyboard_cortex.o: $(SRC_DIR)/keyboard_cortex.cpp $(SRC_DIR)/keyboard_cortex.h $(TESTS_DIR)/Arduino.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/keyboard_cortex.cpp
+
+test_keyboard_cortex.o: $(TESTS_DIR)/test_keyboard_cortex.cpp  $(SRC_DIR)/keyboard_cortex.h $(TESTS_DIR)/Arduino.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TESTS_DIR)/test_keyboard_cortex.cpp
+
+test_keyboard_cortex: keyboard_cortex.o test_keyboard_cortex.o Arduino.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
 

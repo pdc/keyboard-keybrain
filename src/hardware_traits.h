@@ -12,9 +12,12 @@
 #define HARDWARE_TRAITS_H
 
 #include "Arduino.h"
+#include "Keyboard.h"
 
 
 typedef unsigned long millis_t;
+typedef uint16_t modifier_flags_t;
+typedef uint8_t scancode_t;
 
 /*
 * Defines how to access the I/O pins.
@@ -38,6 +41,41 @@ struct PinTraits {
     // Returns one of HIGH, LOW.
     static int digitalRead(int pin) {
         return ::digitalRead(pin);
+    }
+};
+
+
+struct KeyboardTraits {
+    /**
+     * Set modifier keys. flags is combination of MODIFIERKEY_{CTRL,SHIFT,ALT,GUI}.
+     */
+    void set_modifier(modifier_flags_t flags) {
+        ::Keyboard.set_modifier(flags);
+    }
+
+    // The API is rather annoying: 6 functions to set 6 items in a global variable.
+
+    void set_key1(scancode_t scancode) {
+        ::Keyboard.set_key1(scancode);
+    }
+    void set_key2(scancode_t scancode) {
+        ::Keyboard.set_key2(scancode);
+    }
+    void set_key3(scancode_t scancode) {
+        ::Keyboard.set_key3(scancode);
+    }
+    void set_key4(scancode_t scancode) {
+        ::Keyboard.set_key4(scancode);
+    }
+    void set_key5(scancode_t scancode) {
+        ::Keyboard.set_key5(scancode);
+    }
+    void set_key6(scancode_t scancode) {
+        ::Keyboard.set_key6(scancode);
+    }
+
+    void send_now() {
+        ::Keyboard.send_now();
     }
 };
 
